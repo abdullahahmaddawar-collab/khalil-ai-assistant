@@ -2,7 +2,7 @@ import os
 import requests
 
 # Production Tunnel URL (apna actual active tunnel link yahan rakhein):
-URL = 'https://aapka-tunnel-url.lhr.life/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
+URL = 'https://b0af9b70feb232.lhr.life/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
 
 FILE = 'sample_voice.mp3'
 print('--- SCRIPT STARTED ---')
