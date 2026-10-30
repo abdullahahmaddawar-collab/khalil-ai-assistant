@@ -1,10 +1,8 @@
 import os
 import requests
 
-# Agar aap production URL use kar rahe hain (recommended):
-URL = 'URL = 'https://aapka-tunnel-url.lhr.life/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76''
-# Ya agar test URL hi rakhna hai toh n8n wala exact path match karein:
-# URL = 'http://localhost:5678/webhook-test/voice-command'
+# Production Tunnel URL (apna actual active tunnel link yahan rakhein):
+URL = 'https://aapka-tunnel-url.lhr.life/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
 
 FILE = 'sample_voice.mp3'
 print('--- SCRIPT STARTED ---')
