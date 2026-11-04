@@ -2,8 +2,8 @@ import os
 import requests
 from openai import OpenAI
 
-# Apni OpenAI API key yahan enter karein (ya environment variable set karein)
-client = OpenAI(api_key="YOUR_OPENAI_API_KEY")
+# Sahi tareeqa: Render par banaye gaye variable ka naam dein
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # n8n Webhook URL
 URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
