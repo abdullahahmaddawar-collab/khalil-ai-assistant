@@ -6,7 +6,7 @@ from openai import OpenAI
 client = OpenAI(api_key="YOUR_OPENAI_API_KEY")
 
 # n8n Webhook URL
-URL = 'http://localhost:5678/webhook-test/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
+URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
 FILE = 'sample_voice.mp3'
 
 print('--- SCRIPT STARTED ---')
