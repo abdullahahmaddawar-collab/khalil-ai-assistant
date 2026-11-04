@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Template for Floating Microphone Button -->
+        <template id="VoiceWidgetTemplate" name="Khalil Voice Widget Template">
+            <div class="o_mail_systray_item dropdown">
+                <button t-on-click="toggleRecording" 
+                        t-att-class="state.isRecording ? 'btn btn-danger rounded-circle' : 'btn btn-light rounded-circle'"
+                        style="width: 38px; height: 38px; padding: 0; position: relative;"
+                        title="Khalil AI Voice Assistant">
+                    <i t-att-class="state.isRecording ? 'fa fa-stop' : 'fa fa-microphone'" style="font-size: 16px;"></i>
+                </button>
+            </div>
+        </template>
+
+        <!-- Asset Bundle Injection -->
+        <template id="assets_backend" name="khalil_ai_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/khalil-ai-assistant/static/src/js/voice_widget.js"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>
