@@ -1,32 +1,35 @@
 import os
 import requests
-from openai import OpenAI
+from google import genai
 
-# Sahi tareeqa: Render par banaye gaye variable ka naam dein
-client = OpenAI(api_key=os.environ.get("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"))
+# Environment variable se Gemini API key load hogi
+client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6IqMa82wbTetG14sZMBmekRkAStsFEJy-VyD0D7RtAvsA"))
 
-# n8n Webhook URL
 URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
 FILE = 'sample_voice.mp3'
 
-print('--- SCRIPT STARTED ---')
+print('--- SCRIPT STARTED (USING GOOGLE GEMINI API) ---')
 
 if not os.path.exists(FILE):
     print(f'Error: {FILE} not found in folder!')
 else:
-    print(f'Transcribing {FILE} using OpenAI Whisper...')
+    print(f'Processing {FILE} using Gemini...')
     try:
-        # 1. Audio file ko OpenAI Whisper API ke zariye text mein convert karein
-        with open(FILE, 'rb') as audio_file:
-            transcript_response = client.audio.transcriptions.create(
-                model="whisper-1",
-                file=audio_file
-            )
+        # 1. Audio file ko upload karke Gemini ke zariye transcribe/process karein
+        audio_file = client.files.upload(file=FILE)
         
-        transcript_text = transcript_response.text
+        response = client.models.generate_content(
+            model='gemini-3.8-flash',
+            contents=[
+                audio_file,
+                "Please provide an accurate, clean text transcription of this audio file, with no extra commentary."
+            ]
+        )
+        
+        transcript_text = response.text.strip()
         print(f'✅ Transcript Generated: "{transcript_text}"')
 
-        # 2. Ab yeh transcript JSON payload mein rakh kar n8n webhook ko POST karein
+        # 2. Transcript ko n8n webhook par POST karein
         print('Sending transcript to n8n webhook...')
         payload = {'transcript': transcript_text}
         r = requests.post(URL, json=payload)
