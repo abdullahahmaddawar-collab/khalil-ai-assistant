@@ -1,6 +1,5 @@
 import os
 import requests
-<<<<<<< HEAD
 from openai import OpenAI
 
 # Apni OpenAI API key yahan enter karein (ya environment variable set karein)
@@ -37,26 +36,3 @@ else:
 
     except Exception as e:
         print('❌ Error:', e)
-=======
-
-# Agar aap production URL use kar rahe hain (recommended):
-URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
-
-# Ya agar test URL hi rakhna hai toh n8n wala exact path match karein:
-# URL = 'http://localhost:5678/webhook-test/voice-command'
-
-FILE = 'sample_voice.mp3'
-print('--- SCRIPT STARTED ---')
-
-if not os.path.exists(FILE):
-  print(f'Error: {FILE} not found in folder!')
-else:
-  print(f'Sending {FILE}...')
-  try:
-    with open(FILE, 'rb') as f:
-      r = requests.post(URL, files={'file': (FILE, f, 'audio/mpeg')})
-      print('Status:', r.status_code)
-      print('Response:', r.text)
-  except Exception as e:
-    print('Error:', e)
->>>>>>> 960cdd7
