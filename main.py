@@ -3,7 +3,7 @@ import requests
 from openai import OpenAI
 
 # Sahi tareeqa: Render par banaye gaye variable ka naam dein
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.environ.get("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"))
 
 # n8n Webhook URL
 URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
