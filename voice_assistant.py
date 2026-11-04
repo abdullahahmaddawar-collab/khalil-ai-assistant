@@ -13,7 +13,11 @@ CORS(app)
 # N8N_WEBHOOK_URL = "http://localhost:5678/webhook-test/fd8cf684-9a5d-4a41-8595-7cf507d5ef76"
 
 # Naya URL (Production mode - yeh lagayein)
+<<<<<<< HEAD
 N8N_WEBHOOK_URL = "http://localhost:5678/webhook-test/fd8cf684-9a5d-4a41-8595-7cf507d5ef76"
+=======
+N8N_WEBHOOK_URL = "http://localhost:5678/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76"
+>>>>>>> 960cdd7
 
 HTML = r"""
 <!DOCTYPE html>
