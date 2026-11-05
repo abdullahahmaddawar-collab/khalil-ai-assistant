@@ -3,6 +3,7 @@ import time
 import requests
 from google import genai
 
+# Yahan variable ka naam 'GEMINI_API_KEY' dena hai
 client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LTa03acfnrwrZO8UeJUkwzl7tZUMvVP9oCHaVZpWcz9A"))
 
 URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
