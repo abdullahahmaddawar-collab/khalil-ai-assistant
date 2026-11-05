@@ -4,7 +4,7 @@ import uuid
 
 print("--- SCRIPT STARTED ---")
 
-URL = "http://localhost:5678/webhook-test/fd8cf684-9a5d-4a41-8595-7cf507d5ef76"
+URL = "http://localhost:5678/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76"
 FILE = "sample_voice.mp3"
 
 if not os.path.exists(FILE):
