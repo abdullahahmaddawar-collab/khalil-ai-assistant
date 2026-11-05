@@ -3,10 +3,11 @@ import time
 import requests
 from google import genai
 
-# Render environment se GEMINI_API_KEY read karna
-client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6IYm4eEtsr9eGHLp5z13OrogPCDts7lrtlJWQns-aeQNg"))
+# Render environment variable se GEMINI_API_KEY read karna
+client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LAEbx7G4dGLwxGLOHmEZKbEEsXyjkGSlBITjTuD7VM4w"))
 
-URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
+# Yahan ngrok domain ke sath n8n ka poora production webhook path dena zaroori hai
+URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
 FILE = 'sample_voice.mp3'
 
 print('--- SCRIPT STARTED (USING GOOGLE GEMINI API) ---')
@@ -36,7 +37,7 @@ else:
             transcript_text = response.text.strip()
             print(f'✅ Transcript Generated: "{transcript_text}"')
 
-            # Sending transcript to n8n webhook
+            # Sending transcript to n8n webhook via ngrok tunnel
             print('Sending transcript to n8n webhook...')
             payload = {'transcript': transcript_text}
             r = requests.post(URL, json=payload)
