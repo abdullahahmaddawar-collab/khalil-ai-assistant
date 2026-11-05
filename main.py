@@ -3,7 +3,8 @@ import time
 import requests
 from google import genai
 
-client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LH79dUiEBiecp8nmLImdr4WfuoqoRD8M7N-TX5lnOx3g"))
+# API key ko environment variable se secure tareeqay se load karein
+client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LTa03acfnrwrZO8UeJUkwzl7tZUMvVP9oCHaVZpWcz9A"))
 
 URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
 FILE = 'sample_voice.mp3'
@@ -23,7 +24,7 @@ else:
             audio_file = client.files.upload(file=FILE)
             
             response = client.models.generate_content(
-                model='gemini-3.8-flash',
+                model='gemini-1.5-flash',
                 contents=[
                     audio_file,
                     "Please provide an accurate, clean text transcription of this audio file, with no extra commentary."
