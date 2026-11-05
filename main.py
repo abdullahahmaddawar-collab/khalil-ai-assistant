@@ -3,7 +3,6 @@ import time
 import requests
 from google import genai
 
-# API key ko environment variable se secure tareeqay se load karein
 client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LTa03acfnrwrZO8UeJUkwzl7tZUMvVP9oCHaVZpWcz9A"))
 
 URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev'
@@ -23,8 +22,8 @@ else:
         try:
             audio_file = client.files.upload(file=FILE)
             
-response = client.models.generate_content(
-                model='gemini-2.5-flash',  # ya phir 'gemini-1.5-flash' baghair prefix ke
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
                 contents=[
                     audio_file,
                     "Please provide an accurate, clean text transcription of this audio file, with no extra commentary."
