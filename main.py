@@ -23,8 +23,8 @@ else:
         try:
             audio_file = client.files.upload(file=FILE)
             
-            response = client.models.generate_content(
-                model='gemini-1.5-flash',
+response = client.models.generate_content(
+                model='gemini-2.5-flash',  # ya phir 'gemini-1.5-flash' baghair prefix ke
                 contents=[
                     audio_file,
                     "Please provide an accurate, clean text transcription of this audio file, with no extra commentary."
