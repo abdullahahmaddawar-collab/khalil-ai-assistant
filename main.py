@@ -10,8 +10,7 @@ client = genai.Client(
 )
 
 # n8n production webhook URL
-URL = os.environ.get("N8N_WEBHOOK_URL =
-https://mop-upcountry-enigmatic.ngrok-free.dev/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76")
+URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
 
 FILE = "sample_voice.mp3"
 
