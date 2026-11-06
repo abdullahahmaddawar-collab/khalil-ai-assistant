@@ -1,56 +1,68 @@
+
 import os
 import time
 import requests
 from google import genai
 
-# Render environment variable se GEMINI_API_KEY read karna
-client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LCB72-JopyqzMSkND-gHi36Arr_RLFgXRjiQH8lRwRHg"))
+# Gemini API key from Render Environment
+client = genai.Client(
+    api_key=os.environ.get("AQ.Ab8RN6LCB72-JopyqzMSkND-gHi36Arr_RLFgXRjiQH8lRwRHg")
+)
 
-# Yahan ngrok domain ke sath n8n ka poora production webhook path dena zaroori hai
-URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
-FILE = 'sample_voice.mp3'
+# n8n production webhook URL
+URL = os.environ.get("N8N_WEBHOOK_URL =
+https://mop-upcountry-enigmatic.ngrok-free.dev/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76")
 
-print('--- SCRIPT STARTED (USING GOOGLE GEMINI API) ---')
+FILE = "sample_voice.mp3"
+
+print("--- KHALIL AI STARTED ---")
+
+if not URL:
+    raise ValueError("N8N_WEBHOOK_URL is missing!")
 
 if not os.path.exists(FILE):
-    print(f'Error: {FILE} not found in folder!')
+    print(f"Error: {FILE} not found!")
 else:
-    print(f'Processing {FILE} using Gemini...')
-    
-    max_retries = 3
-    success = False
-    
-    for attempt in range(max_retries):
+    print(f"Processing {FILE} using Gemini...")
+
+    for attempt in range(3):
         try:
-            # Audio file upload to Gemini
             audio_file = client.files.upload(file=FILE)
-            
-            # Text transcription generation
+
             response = client.models.generate_content(
-                model='gemini-2.5-flash',
+                model="gemini-2.5-flash",
                 contents=[
                     audio_file,
-                    "Please provide an accurate, clean text transcription of this audio file, with no extra commentary."
+                    "Provide an accurate, clean text transcription."
                 ]
             )
-            
-            transcript_text = response.text.strip()
-            print(f'✅ Transcript Generated: "{transcript_text}"')
 
-            # Sending transcript to n8n webhook via ngrok tunnel
-            print('Sending transcript to n8n webhook...')
-            payload = {'transcript': transcript_text}
-            r = requests.post(URL, json=payload)
-            
-            print('Status:', r.status_code)
-            print('Response:', r.text)
-            success = True
+            transcript_text = response.text.strip()
+
+            print("Transcript:", transcript_text)
+
+            payload = {
+                "transcript": transcript_text
+            }
+
+            print("Sending transcript to n8n...")
+
+            r = requests.post(
+                URL,
+                json=payload,
+                timeout=60
+            )
+
+            r.raise_for_status()
+
+            print("SUCCESS:", r.status_code)
+            print("n8n Response:", r.text)
             break
 
         except Exception as e:
-            print(f'⚠️ Attempt {attempt + 1} failed with error: {e}')
-            if attempt < max_retries - 1:
-                print('Retrying in 5 seconds...')
+            print(f"Attempt {attempt + 1} failed: {e}")
+
+            if attempt < 2:
                 time.sleep(5)
             else:
-                print('❌ All retry attempts failed.')
+                print("All attempts failed!")
