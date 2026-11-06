@@ -4,7 +4,7 @@ import requests
 from google import genai
 
 # Render environment variable se GEMINI_API_KEY read karna
-client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LAEbx7G4dGLwxGLOHmEZKbEEsXyjkGSlBITjTuD7VM4w"))
+client = genai.Client(api_key=os.environ.get("AQ.Ab8RN6LCB72-JopyqzMSkND-gHi36Arr_RLFgXRjiQH8lRwRHg"))
 
 # Yahan ngrok domain ke sath n8n ka poora production webhook path dena zaroori hai
 URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
