@@ -6,7 +6,7 @@ from google import genai
 
 # Gemini API key from Render Environment
 client = genai.Client(
-    api_key=os.environ.get("AQ.Ab8RN6LCB72-JopyqzMSkND-gHi36Arr_RLFgXRjiQH8lRwRHg")
+    api_key=os.environ.get("AQ.Ab8RN6JKjwxfeZtjpckwGXPBoWCGISciAPletrYPjPwvS64m8Q")
 )
 
 # n8n production webhook URL
