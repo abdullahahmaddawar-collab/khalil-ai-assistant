@@ -1,18 +1,11 @@
 
 import os
-from flask import Flask, request, jsonify
 from google import genai
 
-app = Flask(__name__)
-
-# Gemini API Configuration
 API_KEY = os.environ.get("AQ.Ab8RN6IC4VGSSCbbE5FyyV7tpvaF6yEG5ZlCBYztJ5RdKk-GkA")
 
 if not API_KEY:
-    raise RuntimeError(
-        "GEMINI_API_KEY is missing. "
-        "Please add it in Render Environment Variables."
-    )
+    raise RuntimeError("AQ.Ab8RN6IC4VGSSCbbE5FyyV7tpvaF6yEG5ZlCBYztJ5RdKk-GkA")
 
 client = genai.Client(api_key=API_KEY)
 
