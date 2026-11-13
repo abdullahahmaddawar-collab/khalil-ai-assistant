@@ -1,3 +1,4 @@
+
 import os
 from flask import Flask, request, jsonify
 from google import genai
@@ -15,6 +16,7 @@ if not API_KEY:
 
 client = genai.Client(api_key=API_KEY)
 
+
 # Home Route
 @app.route("/", methods=["GET"])
 def home():
@@ -23,10 +25,14 @@ def home():
         "message": "Khalil AI Assistant is running!"
     })
 
+
 # Health Check
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "healthy"})
+    return jsonify({
+        "status": "healthy"
+    })
+
 
 # AI Chat Route
 @app.route("/chat", methods=["POST"])
@@ -34,7 +40,14 @@ def chat():
     try:
         data = request.get_json(silent=True) or {}
 
-        user_message = data.get("message", "").strip()
+        user_message = data.get("message", "")
+
+        if not isinstance(user_message, str):
+            return jsonify({
+                "error": "Message must be text."
+            }), 400
+
+        user_message = user_message.strip()
 
         if not user_message:
             return jsonify({
@@ -50,14 +63,19 @@ def chat():
             "reply": response.text
         })
 
-    except Exception as e:
+    except Exception:
         app.logger.exception("Chat request failed")
 
         return jsonify({
             "error": "AI request failed. Please try again."
         }), 500
 
+
 # Render Server
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+
+    app.run(
+        host="0.0.0.0",
+        port=port
+    )
