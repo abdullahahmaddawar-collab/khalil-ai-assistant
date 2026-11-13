@@ -9,7 +9,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'khalil-ai-assistant/static/src/js/voice_widget.js',
+            'khalil_ai_assistant/static/src/js/voice_widget.js',
         ],
     },
     'installable': True,
