@@ -5,13 +5,14 @@ from google import genai
 
 app = Flask(__name__)
 
-# Read API key from Render
-API_KEY = os.environ.get("AQ.Ab8RN6IC4VGSSCbbE5FyyV7tpvaF6yEG5ZlCBYztJ5RdKk-GkA")
+# Yahan hum dono tareeqon se key check kar lete hain taake error na aaye
+API_KEY = os.environ.get("AQ.Ab8RN6IOhs_R7ZFlO8E0yZxLCjMR9lDbm-ACTpzNErKDLxWmPA") or os.environ.get("GEMINI_API")
 
 if not API_KEY:
-    raise RuntimeError("GEMINI_API_KEY environment variable is missing")
+    raise RuntimeError(
+        "GEMINI_API_KEY environment variable is missing"
+    )
 
-# Initialize Gemini
 client = genai.Client(api_key=API_KEY)
 
 
