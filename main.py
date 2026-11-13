@@ -1,66 +1,64 @@
+
 import os
-import time
-import requests
+from flask import Flask, request, jsonify
 from google import genai
 
-# Gemini API key from Render Environment
-client = genai.Client(
-    api_key=os.environ.get("AQ.Ab8RN6JsvJwqQT1VmC-vUaG6AgJPgQLvKWzihr5GeENJQLxUrQ")
-)
+app = Flask(__name__)
 
-# n8n production webhook URL
-URL = 'https://mop-upcountry-enigmatic.ngrok-free.dev/webhook/fd8cf684-9a5d-4a41-8595-7cf507d5ef76'
+# Gemini API Configuration
+API_KEY = os.environ.get("AQ.Ab8RN6IC4VGSSCbbE5FyyV7tpvaF6yEG5ZlCBYztJ5RdKk-GkA")
 
-FILE = "sample_voice.mp3"
+if not API_KEY:
+    raise RuntimeError(
+        "GEMINI_API_KEY is missing. "
+        "Please add it in Render Environment Variables."
+    )
 
-print("--- KHALIL AI STARTED ---")
+client = genai.Client(api_key=API_KEY)
 
-if not URL:
-    raise ValueError("N8N_WEBHOOK_URL is missing!")
+# Home Route
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({
+        "status": "success",
+        "message": "Khalil AI Assistant is running!"
+    })
 
-if not os.path.exists(FILE):
-    print(f"Error: {FILE} not found!")
-else:
-    print(f"Processing {FILE} using Gemini...")
+# Health Check
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "healthy"})
 
-    for attempt in range(3):
-        try:
-            audio_file = client.files.upload(file=FILE)
+# AI Chat Route
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        data = request.get_json(silent=True) or {}
 
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=[
-                    audio_file,
-                    "Provide an accurate, clean text transcription."
-                ]
-            )
+        user_message = data.get("message", "").strip()
 
-            transcript_text = response.text.strip()
+        if not user_message:
+            return jsonify({
+                "error": "Please provide a message."
+            }), 400
 
-            print("Transcript:", transcript_text)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=user_message
+        )
 
-            payload = {
-                "transcript": transcript_text
-            }
+        return jsonify({
+            "reply": response.text
+        })
 
-            print("Sending transcript to n8n...")
+    except Exception as e:
+        app.logger.exception("Chat request failed")
 
-            r = requests.post(
-                URL,
-                json=payload,
-                timeout=60
-            )
+        return jsonify({
+            "error": "AI request failed. Please try again."
+        }), 500
 
-            r.raise_for_status()
-
-            print("SUCCESS:", r.status_code)
-            print("n8n Response:", r.text)
-            break
-
-        except Exception as e:
-            print(f"Attempt {attempt + 1} failed: {e}")
-
-            if attempt < 2:
-                time.sleep(5)
-            else:
-                print("All attempts failed!")
+# Render Server
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
