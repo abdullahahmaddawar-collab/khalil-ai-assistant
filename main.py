@@ -1,16 +1,20 @@
 
 import os
+from flask import Flask, request, jsonify
 from google import genai
 
+app = Flask(__name__)
+
+# Read API key from Render
 API_KEY = os.environ.get("AQ.Ab8RN6IC4VGSSCbbE5FyyV7tpvaF6yEG5ZlCBYztJ5RdKk-GkA")
 
 if not API_KEY:
-    raise RuntimeError("AQ.Ab8RN6IC4VGSSCbbE5FyyV7tpvaF6yEG5ZlCBYztJ5RdKk-GkA")
+    raise RuntimeError("GEMINI_API_KEY environment variable is missing")
 
+# Initialize Gemini
 client = genai.Client(api_key=API_KEY)
 
 
-# Home Route
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({
@@ -19,56 +23,32 @@ def home():
     })
 
 
-# Health Check
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({
-        "status": "healthy"
-    })
+    return jsonify({"status": "healthy"})
 
 
-# AI Chat Route
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
         data = request.get_json(silent=True) or {}
+        message = data.get("message", "")
 
-        user_message = data.get("message", "")
-
-        if not isinstance(user_message, str):
-            return jsonify({
-                "error": "Message must be text."
-            }), 400
-
-        user_message = user_message.strip()
-
-        if not user_message:
-            return jsonify({
-                "error": "Please provide a message."
-            }), 400
+        if not isinstance(message, str) or not message.strip():
+            return jsonify({"error": "Message is required"}), 400
 
         response = client.models.generate_content(
             model="gemini-2.5-flash",
-            contents=user_message
+            contents=message.strip()
         )
 
-        return jsonify({
-            "reply": response.text
-        })
+        return jsonify({"reply": response.text})
 
     except Exception:
-        app.logger.exception("Chat request failed")
-
-        return jsonify({
-            "error": "AI request failed. Please try again."
-        }), 500
+        app.logger.exception("Gemini API error")
+        return jsonify({"error": "AI request failed"}), 500
 
 
-# Render Server
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-
-    app.run(
-        host="0.0.0.0",
-        port=port
-    )
+    app.run(host="0.0.0.0", port=port)
