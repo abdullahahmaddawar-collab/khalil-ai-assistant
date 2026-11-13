@@ -6,7 +6,7 @@ print("DEBUG - Available Env Keys:", list(os.environ.keys()))
 
 app = Flask(__name__)
 
-API_KEY = os.environ.get("AQ.Ab8RN6IC4VGSSCbbE5FyyV7tpvaF6yEG5ZlCBYztJ5RdKk-GkA")
+API_KEY = os.environ.get("AQ.Ab8RN6IvhSLu1FlMCdKPto0FfV4U0VN1oC3qYimfpIwChWT44Q")
 
 if not API_KEY:
     raise RuntimeError("GEMINI_API_KEY environment variable is missing")
